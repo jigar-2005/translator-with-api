@@ -1,0 +1,207 @@
+
+    <!doctype html>
+    <html lang="en">
+    
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <title>Google Translator</title>
+    </head>
+    
+    <style>
+        .data_content_box {
+            margin-top: 30px;
+            margin-bottom: 30px;
+            font-size: 24px;
+            padding-left: 10px;
+            padding-right: 10px;
+            width: 98%;
+        }
+    
+        .btn {
+            float: right;
+            margin-right: 30px;
+            margin-top: -25px;
+            margin-bottom: 10px;
+        }
+    
+        @media (min-width: 992px) {
+            body {
+                padding-left: 15%;
+                padding-right: 15%;
+            }
+        }
+    
+        @media (min-width: 768px) {
+            .content {
+                border: 1px solid #000;
+            }
+    
+            .user_data_box {
+                border-right: 1px solid;
+            }
+        }
+    
+        @media (max-width: 768px) {
+            .user_data_box {
+                border: 1px solid black;
+                margin-left: 2%;
+                margin-right: 2%;
+                width: 96%;
+            }
+    
+            .output_data_box {
+                margin-top: 10px;
+                border: 1px solid black;
+                margin-left: 2%;
+                margin-right: 2%;
+                width: 96%;
+            }
+    
+            .btn {
+                width: 100%;
+                float: center;
+                margin-right: 0;
+            }
+        }
+    </style>
+    
+    <body>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div class="container-md text-center mb-5">
+            <h1 style="font-size: 60px;"><u><b>Google Translator</b></u></h1>
+            <div class="content mt-5">
+                <form action="/update_api" method="POST">
+                    <div class="row">
+                        <div class="col-12 col-md-6 text-center user_data_box">
+                            <h1 style="border-bottom: 1px solid black; padding-bottom: 10px;"><u>
+                                    <select name="default_language" style="border: none;">
+                                        {% if default_language == 'hi' %}
+                                        <option value="en" style="font-size: 24px;">English</option>
+                                        <option value="hi" selected style="font-size: 24px;">Hindi</option>
+                                        <option value="it" style="font-size: 24px;">Italy</option>
+                                        <option value="zh" style="font-size: 24px;">Chinese</option>
+                                        <option value="ru" style="font-size: 24px;">Russian</option>
+                                        <option value="gu" style="font-size: 24px;">Gujarati</option>
+                                        {% elif default_language == 'it' %}
+                                        <option value="en" style="font-size: 24px;">English</option>
+                                        <option value="hi" style="font-size: 24px;">Hindi</option>
+                                        <option value="it" selected style="font-size: 24px;">Italy</option>
+                                        <option value="zh" style="font-size: 24px;">Chinese</option>
+                                        <option value="ru" style="font-size: 24px;">Russian</option>
+                                        <option value="gu" style="font-size: 24px;">Gujarati</option>
+                                        {% elif default_language == 'zh' %}
+                                        <option value="en" style="font-size: 24px;">English</option>
+                                        <option value="hi" style="font-size: 24px;">Hindi</option>
+                                        <option value="it" style="font-size: 24px;">Italy</option>
+                                        <option value="zh" selected style="font-size: 24px;">Chinese</option>
+                                        <option value="ru" style="font-size: 24px;">Russian</option>
+                                        <option value="gu" style="font-size: 24px;">Gujarati</option>
+                                        {% elif default_language == 'ru' %}
+                                        <option value="en" style="font-size: 24px;">English</option>
+                                        <option value="hi" style="font-size: 24px;">Hindi</option>
+                                        <option value="it" style="font-size: 24px;">Italy</option>
+                                        <option value="zh" style="font-size: 24px;">Chinese</option>
+                                        <option value="ru" selected style="font-size: 24px;">Russian</option>
+                                        <option value="gu" style="font-size: 24px;">Gujarati</option>
+                                        {% elif default_language == 'gu' %}
+                                        <option value="en" style="font-size: 24px;">English</option>
+                                        <option value="hi" style="font-size: 24px;">Hindi</option>
+                                        <option value="it" style="font-size: 24px;">Italy</option>
+                                        <option value="zh" style="font-size: 24px;">Chinese</option>
+                                        <option value="ru" style="font-size: 24px;">Russian</option>
+                                        <option value="gu" selected style="font-size: 24px;">Gujarati</option>
+                                        {% else %}
+                                        <option value="en" selected style="font-size: 24px;">English</option>
+                                        <option value="hi" style="font-size: 24px;">Hindi</option>
+                                        <option value="it" style="font-size: 24px;">Italy</option>
+                                        <option value="zh" style="font-size: 24px;">Chinese</option>
+                                        <option value="ru" style="font-size: 24px;">Russian</option>
+                                        <option value="gu" style="font-size: 24px;">Gujarati</option>
+                                        {% endif %}
+                                    </select>
+                                </u></h1>
+                            <textarea name="user_text" class="data_content_box" rows="7"
+                                style="margin-left: 2%;">{{user_text}}</textarea>
+                            <button type="submit" class="btn btn-primary">Convert data</button>
+                        </div>
+                        <div class="col-12 col-md-6 text-center output_data_box">
+                            <h1 style="border-bottom: 1px solid black; padding-bottom: 10px;"><u>
+                                    <select name="convert_language" style="border: none;">
+                                        {% if convert_language == 'hi' %}
+                                        <option value="en" style="font-size: 24px;">English</option>
+                                        <option value="hi" selected style="font-size: 24px;">Hindi</option>
+                                        <option value="it" style="font-size: 24px;">Italy</option>
+                                        <option value="zh" style="font-size: 24px;">Chinese</option>
+                                        <option value="ru" style="font-size: 24px;">Russian</option>
+                                        <option value="gu" style="font-size: 24px;">Gujarati</option>
+                                        {% elif convert_language == 'it' %}
+                                        <option value="en" style="font-size: 24px;">English</option>
+                                        <option value="hi" style="font-size: 24px;">Hindi</option>
+                                        <option value="it" selected style="font-size: 24px;">Italy</option>
+                                        <option value="zh" style="font-size: 24px;">Chinese</option>
+                                        <option value="ru" style="font-size: 24px;">Russian</option>
+                                        <option value="gu" style="font-size: 24px;">Gujarati</option>
+                                        {% elif convert_language == 'zh' %}
+                                        <option value="en" style="font-size: 24px;">English</option>
+                                        <option value="hi" style="font-size: 24px;">Hindi</option>
+                                        <option value="it" style="font-size: 24px;">Italy</option>
+                                        <option value="zh" selected style="font-size: 24px;">Chinese</option>
+                                        <option value="ru" style="font-size: 24px;">Russian</option>
+                                        <option value="gu" style="font-size: 24px;">Gujarati</option>
+                                        {% elif convert_language == 'ru' %}
+                                        <option value="en" style="font-size: 24px;">English</option>
+                                        <option value="hi" style="font-size: 24px;">Hindi</option>
+                                        <option value="it" style="font-size: 24px;">Italy</option>
+                                        <option value="zh" style="font-size: 24px;">Chinese</option>
+                                        <option value="ru" selected style="font-size: 24px;">Russian</option>
+                                        <option value="gu" style="font-size: 24px;">Gujarati</option>
+                                        {% elif convert_language == 'gu' %}
+                                        <option value="en" style="font-size: 24px;">English</option>
+                                        <option value="hi" style="font-size: 24px;">Hindi</option>
+                                        <option value="it" style="font-size: 24px;">Italy</option>
+                                        <option value="zh" style="font-size: 24px;">Chinese</option>
+                                        <option value="ru" style="font-size: 24px;">Russian</option>
+                                        <option value="gu" selected style="font-size: 24px;">Gujarati</option>
+                                        {% else %}
+                                        <option value="en" style="font-size: 24px;">English</option>
+                                        <option value="hi" selected style="font-size: 24px;">Hindi</option>
+                                        <option value="it" style="font-size: 24px;">Italy</option>
+                                        <option value="zh" style="font-size: 24px;">Chinese</option>
+                                        <option value="ru" style="font-size: 24px;">Russian</option>
+                                        <option value="gu" style="font-size: 24px;">Gujarati</option>
+                                        {% endif %}
+                                    </select>
+                                </u></h1>
+                            <textarea name="output_data" class="data_content_box" rows="7" style="margin-right: 2%;"
+                                disabled>{{output_data}}</textarea>
+                            <a class="btn btn-primary" href="/play_output_data{{user_text}}to{{output_data}}/default_language={{default_language}}/convert language={{convert_language}}"
+                                role="button">Play</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+        crossorigin="anonymous"></script>
+    
+    </html>
